@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wms.mapper.GradeMapper">
+
+    <select id="queryfromMark" resultType="com.wms.entity.Grade">
+
+        select ranking from grade where mark=#{mark} and type=#{type}
+    </select>
+
+    <select id="queryMax" resultType="com.wms.entity.Grade">
+
+        select mark from grade where type=#{type} group by mark order by max(mark) desc limit 1;
+    </select>
+
+    <select id="queryMin" resultType="com.wms.entity.Grade">
+
+        select mark from grade where type=#{type} group by mark order by min(mark) asc limit 1;
+    </select>
+
+    <insert id="addGrade" parameterType="com.wms.entity.Grade">
+        insert into grade
+            (mark,ranking,type)
+        values
+            (
+                #{mark},
+                #{ranking},
+                #{type}
+            )
+    </insert>
+
+</mapper>

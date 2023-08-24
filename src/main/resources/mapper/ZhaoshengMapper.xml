@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wms.mapper.ZhaoshengMapper">
+
+    <!-- ???????? -->
+    <resultMap id="BaseResultMap" type="com.wms.entity.Zhaosheng">
+        <id column="id" property="id" />
+        <result column="no" property="no" />
+        <result column="number" property="number" />
+        <result column="strategy" property="strategy" />
+        <result column="download" property="download" />
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        id, no, number, strategy, download
+    </sql>
+
+    <select id="queryfromSchool" resultType="com.wms.entity.Zhaosheng">
+        select id,major_code,major,tuition,number,all_major from zhaosheng ${ew.customSqlSegment}
+    </select>
+
+    <insert id="addZhaosheng" parameterType="com.wms.entity.Zhaosheng">
+        insert into zhaosheng
+        (major,major_code,major_batch,number,all_major,tuition,school,city,school_code,type)
+        values
+            (
+                #{major},
+                #{majorCode},
+                #{majorBatch},
+                #{number},
+                #{allMajor},
+                #{tuition},
+                #{school},
+                #{city},
+                #{schoolCode},
+                #{type}
+            )
+    </insert>
+
+    <update id="updateZhaosheng" parameterType="com.wms.entity.Zhaosheng">
+        update zhaosheng
+        set
+            number=#{number},
+            all_major=#{allMajor},
+            tuition=#{tuition},
+            school=#{school},
+            city=#{city},
+            school_code=#{schoolCode},
+            type=#{type},
+        where school = #{school} and major=#{major}
+    </update>
+
+
+
+</mapper>

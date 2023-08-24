@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wms.mapper.HomepageMapper">
+
+    <!-- ???????? -->
+    <resultMap id="BaseResultMap" type="com.wms.entity.Homepage">
+        <id column="id" property="id" />
+        <result column="no" property="no" />
+        <result column="number" property="number" />
+        <result column="strategy" property="strategy" />
+        <result column="download" property="download" />
+    </resultMap>
+<!--    select * from homepage where thisMinplace between #{down} and #{up} and major_batch=#{majorBatch} and type=#{type}-->
+    <!-- ??????? -->
+    <sql id="Base_Column_List">
+        id, no, number, strategy, download
+    </sql>
+
+    <select id="pageSelect" resultType="com.wms.entity.Homepage">
+        select * from homepage ${ew.customSqlSegment}
+    </select>
+
+    <select id="searchBySchool" resultType="com.wms.entity.Homepage">
+        select * from homepage h
+                 <if test="flag == 'major' ">
+                 , (select school, major from admission
+                                             <where>
+                                                 <if test="input != '' and input != null">
+                                                     major like concat('%',#{input},'%')
+                                                 </if>
+                                             </where>) a
+                 </if>
+        <where>
+            <choose>
+                <when test="flag == 'school' ">
+                    h.school like concat('%',#{input},'%')
+                </when>
+                <when test="flag == 'major' ">
+                    a.school = h.school
+                </when>
+                <when test="flag == 'city' ">
+                    city like concat('%',#{input},'%')
+                </when>
+            </choose>
+            <if test="nef != null and nef != 0">
+                and nef=#{nef}
+            </if>
+            <if test="too != null and too != 0">
+            and too=#{too}
+            </if>
+            limit #{pageNum}, #{pageSize};
+        </where>
+    </select>
+
+    <select id="searchByMajor" resultType="com.wms.entity.Homepage">
+        select h.* from homepage h where school in (select school from admission where major = #{major}) and nef = #{nef} and too = #{too};
+    </select>
+
+
+    <select id="pageMajor" resultType="com.wms.entity.Homepage">
+        select homepage.* from homepage,zhaosheng where (instr(all_major,#{major}) or major=#{major}) and homepage.school=zhaosheng.school and homepage.major_batch=#{majorBatch} and homepage.type=#{type} group by homepage.id
+    </select>
+
+    <select id="pagePlace" resultType="com.wms.entity.Homepage">
+        select * from homepage where (this_minplace between #{down} and #{up}) and type=#{type} and major_batch=#{types}
+    </select>
+
+    <insert id="addHomepage" parameterType="com.wms.entity.Homepage">
+        insert into homepage
+        (school,school_code,city,this_number,last_number,this_min,this_minplace,last_min,last_minplace,llast_min,llast_minplace,major_batch,type,nef,too)
+        values
+            (
+                #{school},
+                #{schoolCode},
+                #{city},
+                #{thisNumber},
+                #{lastNumber},
+                #{thisMin},
+                #{thisMinplace},
+                #{lastMin},
+                #{lastMinplace},
+                #{llastMin},
+                #{llastMinplace},
+                #{majorBatch},
+                #{type},
+                #{nef},
+                #{too}
+            )
+    </insert>
+
+    <update id="updateHomepage" parameterType="com.wms.entity.Homepage">
+        update homepage
+        set
+            city=#{city},
+            this_number=#{thisNumber},
+            last_number=#{lastNumber},
+            this_min=#{thisMin},
+            this_minplace=#{thisMinplace},
+            last_min=#{lastMin},
+            last_minplace=#{lastMinplace},
+            llast_min=#{llastMin},
+            llast_minplace=#{llastMinplace}
+        where school = #{school}
+    </update>
+
+</mapper>

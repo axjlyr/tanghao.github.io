@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wms.mapper.StrategyMapper">
+
+    <resultMap id="BaseResultMap" type="com.wms.entity.Strategy">
+        <id column="id" property="id" />
+        <result column="price" property="price" />
+        <result column="gptime" property="gptime" />
+        <result column="name" property="name" />
+        <result column="sytime" property="sytime" />
+        <result column="payment" property="payment" />
+        <result column="type" property="type" />
+        <result column="zztime" property="zztime" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, price, gptime, name,systime,payment,type,zztime
+    </sql>
+
+    <select id="pageSelect" resultType="com.wms.entity.Strategy">
+        select * from strategy ${ew.customSqlSegment}
+    </select>
+
+    <insert id="addStrategy" parameterType="com.wms.entity.Strategy">
+        insert into strategy
+            (price,gqtime,name,sytime,payment,type,zztime)
+        values
+            (
+                #{price},
+                #{gqtime},
+                #{name},
+                #{sytime},
+                #{payment},
+                #{type},
+                #{zztime}
+            )
+    </insert>
+
+    <update id="updateStrategy" parameterType="com.wms.entity.Strategy">
+        update strategy
+        set
+            name=#{name},
+            batche=#{batche},
+            strategy=#{strategy}
+        where no = #{no} and password=#{password}
+    </update>
+</mapper>

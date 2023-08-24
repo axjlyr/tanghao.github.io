@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wms.mapper.UsersMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.wms.entity.Users">
+        <id column="id" property="id" />
+        <result column="no" property="no" />
+        <result column="name" property="name" />
+        <result column="password" property="password" />
+        <result column="role" property="role" />
+        <result column="batch" property="batch" />
+        <result column="strategy" property="strategy" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+
+    <select id="pageSelect" resultType="com.wms.entity.Users">
+        select * from users ${ew.customSqlSegment}
+    </select>
+
+    <select id="findByNo" resultType="java.lang.String">
+        select no from users where no=#{no}
+    </select>
+
+    <insert id="addUsers" parameterType="com.wms.entity.Users">
+        insert into users
+            (no,name,password,role,batche,strategy)
+        values
+            (
+                #{no},
+                #{name},
+                #{password},
+                #{role},
+                #{batche},
+                #{strategy}
+            )
+    </insert>
+
+    <update id="updateUsers" parameterType="com.wms.entity.Users">
+        update users
+        set
+            name=#{name},
+            batche=#{batche},
+            strategy=#{strategy}
+        where no = #{no} and password=#{password}
+    </update>
+
+    <delete id="deleteFromNo" parameterType="java.lang.String">
+        delete from users where no=#{no}
+    </delete>
+
+    <delete id="deleteFromTime" parameterType="com.wms.entity.Users">
+        delete from users where time=#{time}
+    </delete>
+</mapper>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wms.mapper.BatchMapper">
+
+    <!-- ???????? -->
+    <resultMap id="BaseResultMap" type="com.wms.entity.Batch">
+        <id column="id" property="id" />
+        <result column="no" property="no" />
+        <result column="number" property="number" />
+        <result column="strategy" property="strategy" />
+        <result column="download" property="download" />
+    </resultMap>
+
+    <!-- ??????? -->
+    <sql id="Base_Column_List">
+        id, no, number, strategy, download
+    </sql>
+
+    <select id="pageSelect" resultType="com.wms.entity.Batch">
+        select * from batch ${ew.customSqlSegment}
+    </select>
+
+    <insert id="addBatch" parameterType="com.wms.entity.Batch">
+    insert into batch
+    (no,number,strategy)
+    values
+        (
+            #{no},
+            #{number},
+            #{strategy}
+    )
+    </insert>
+
+    <delete id="deleteFromNo" parameterType="java.lang.String">
+        delete from batch where no=#{no}
+    </delete>
+</mapper>

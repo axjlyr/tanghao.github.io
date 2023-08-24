@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wms.mapper.SortMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.wms.entity.Sort">
+        <id column="id" property="id" />
+        <result column="school" property="school" />
+        <result column="type" property="type" />
+        <result column="level" property="level" />
+        <result column="grade" property="grade" />
+        <result column="pubpri" property="pubpri" />
+        <result column="rank" property="rank" />
+        <result column="scale" property="scale" />
+    </resultMap>
+
+
+    <select id="pageSelect" resultType="com.wms.entity.Sort">
+        select * from sort ${ew.customSqlSegment}
+    </select>
+
+    <select id="querySortInfo" resultType="java.lang.String">
+        select concat(type,',',level,',',grade,',',pubpri,',',rank,',',scale) from sort ${ew.customSqlSegment};
+    </select>
+</mapper>
